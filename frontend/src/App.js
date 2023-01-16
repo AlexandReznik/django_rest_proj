@@ -23,11 +23,13 @@ class App extends React.Component {
   //   const proj1 = { name_of_project: 'Грин', created_at: 1880 }
   //   const proj2 = { name_of_project: 'Пушкин', created_at: 1799 }
   //   const projects = [proj1, proj2]
+
   //   const item1 = { task: proj1, task_content: 'Task1' }
   //   const item2 = { task: proj1, task_content: 'Task2' }
   //   const item3 = { task: proj2, task_content: 'task1' }
   //   const item4 = { task: proj2, task_content: 'task1' }
   //   const items = [item1, item2, item3, item4]
+
   //   this.state = {
   //     'projects': projects,
   //     'items': items
@@ -37,6 +39,27 @@ class App extends React.Component {
 
   constructor(props) {
     super(props)
+
+    // axios.get('http://127.0.0.1:8000/api/projects/')
+    //   .then(response => {
+    //     const projects = response.data
+    //     this.setState(
+    //       {
+    //         'projects': projects
+    //       }
+    //     )
+    //   }).catch(error => console.log(error))
+
+    // axios.get('http://127.0.0.1:8000/api/tasks/')
+    //   .then(response => {
+    //     const items = response.data
+    //     this.setState(
+    //       {
+    //         'items': items
+    //       }
+    //     )
+    //   }).catch(error => console.log(error))
+
     this.state = {
       'projects': [],
       'items': []
@@ -44,7 +67,7 @@ class App extends React.Component {
   }
 
 
-  componentDidMountProjects() {
+  componentDidMoun() {
     axios.get('http://127.0.0.1:8000/api/projects/')
       .then(response => {
         const projects = response.data
@@ -70,6 +93,9 @@ class App extends React.Component {
   }
 
 
+
+
+
   render() {
     return (
       <div className="App">
@@ -87,7 +113,7 @@ class App extends React.Component {
           <Routes>
             <Route exact path='/' component={() => <ProjectList items={this.state.projects} />} />
             <Route exact path='/tasks' component={() => <TaskList items={this.state.items} />} />
-            <Route path='/author/:id'><ProjectTasksList items={this.state.items} /></Route>
+            <Route path='/tasks/:id'><ProjectTasksList items={this.state.tasks} /></Route>
             <Route path='/projects' element={<Navigate to='/' />} />
             <Route component={NotFound404} />
           </Routes>
@@ -95,6 +121,28 @@ class App extends React.Component {
       </div>
     )
   }
+
+  // componentDidMoun() {
+  //   axios.get('http://127.0.0.1:8000/api/projects/')
+  //     .then(response => {
+  //       const projects = response.data
+  //       this.setState(
+  //         {
+  //           'projects': projects
+  //         }
+  //       )
+  //     }).catch(error => console.log(error))
+
+  //   axios.get('http://127.0.0.1:8000/api/tasks/')
+  //     .then(response => {
+  //       const items = response.data
+  //       this.setState(
+  //         {
+  //           'items': items
+  //         }
+  //       )
+  //     }).catch(error => console.log(error))
+  // }
 
 }
 export default App;

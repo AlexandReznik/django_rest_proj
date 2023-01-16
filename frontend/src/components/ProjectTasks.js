@@ -1,25 +1,25 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 
-const TaskItem = ({ item }) => {
+const TaskItem = ({ task }) => {
     return (
         <tr>
             {/* <td>{item.id}</td> */}
-            <td>{item.task}</td>
-            <td>{item.task_content}</td>
+            <td>{task.task}</td>
+            <td>{task.task_content}</td>
         </tr>
     )
 }
-const ProjectTasksList = ({ items }) => {
+const ProjectTasksList = ({ tasks }) => {
     let { id } = useParams();
-    let filtered_items = items.filter((item) => item.project.id === id)
+    let filtered_items = tasks.filter((task) => task.project.id === id)
     return (
         <table>
             <tr>
                 <th>Task</th>
                 <th>Content</th>
             </tr>
-            {filtered_items.map((item) => <TaskItem item={item} />)}
+            {filtered_items.map((task) => <TaskItem task={task} />)}
         </table>
     )
 }
