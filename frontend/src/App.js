@@ -5,7 +5,7 @@ import ProjectList from './components/Project.js';
 import TaskList from './components/ToDo.js';
 import ProjectTasksList from './components/ProjectTasks.js';
 import axios from 'axios';
-import { BrowserRouter, Route, Link, Routes, Navigate } from 'react-router-dom'
+import { BrowserRouter, Route, Link, Routes, Navigate, HashRouter } from 'react-router-dom'
 
 
 const NotFound404 = ({ location }) => {
@@ -35,6 +35,7 @@ class App extends React.Component {
   //     'items': items
   //   }
   // }
+  // С этим кодом выше не выводит. Белый экран просто.
 
 
   constructor(props) {
@@ -67,30 +68,30 @@ class App extends React.Component {
   }
 
 
-  componentDidMoun() {
-    axios.get('http://127.0.0.1:8000/api/projects/')
-      .then(response => {
-        const projects = response.data
-        this.setState(
-          {
-            'projects': projects
-          }
-        )
-      }).catch(error => console.log(error))
-  }
+  // componentDidMoun() {
+  //   axios.get('http://127.0.0.1:8000/api/projects/')
+  //     .then(response => {
+  //       const projects = response.data
+  //       this.setState(
+  //         {
+  //           'projects': projects
+  //         }
+  //       )
+  //     }).catch(error => console.log(error))
+  // }
 
 
-  componentDidMountToDo() {
-    axios.get('http://127.0.0.1:8000/api/tasks/')
-      .then(response => {
-        const items = response.data
-        this.setState(
-          {
-            'items': items
-          }
-        )
-      }).catch(error => console.log(error))
-  }
+  // componentDidMountToDo() {
+  //   axios.get('http://127.0.0.1:8000/api/tasks/')
+  //     .then(response => {
+  //       const items = response.data
+  //       this.setState(
+  //         {
+  //           'items': items
+  //         }
+  //       )
+  //     }).catch(error => console.log(error))
+  // }
 
 
 
@@ -98,6 +99,13 @@ class App extends React.Component {
 
   render() {
     return (
+      // <div className="App">
+      //   <ProjectList projects={this.state.projects} />
+      //   <TaskList items={this.state.items} />
+
+      // </div>
+      // Если раскомментировать код выше, то отображается только Project Name Created at, но без данных в таблице. С тасками так же
+
       <div className="App">
         <BrowserRouter>
           <nav>
@@ -111,38 +119,42 @@ class App extends React.Component {
             </ul>
           </nav>
           <Routes>
-            <Route exact path='/' component={() => <ProjectList items={this.state.projects} />} />
-            <Route exact path='/tasks' component={() => <TaskList items={this.state.items} />} />
-            <Route path='/tasks/:id'><ProjectTasksList items={this.state.tasks} /></Route>
+            <Route path='/' element={() => <ProjectList projects={this.state.projects} />} />
+            <Route path='/tasks' element={() => <TaskList items={this.state.items} />} />
+            <Route path='/tasks/:id'><ProjectTasksList tasks={this.state.items} /></Route>
             <Route path='/projects' element={<Navigate to='/' />} />
-            <Route component={NotFound404} />
+            <Route element={NotFound404} />
+            {/* <Route path='/'><ProjectList projects={this.state.projects} /></Route> */}
           </Routes>
         </BrowserRouter>
       </div>
+      // Если оставить этот код с роутером, то просто белая страница. И с BrowserRouter, и с HashRouter белая страница
     )
   }
 
-  // componentDidMoun() {
-  //   axios.get('http://127.0.0.1:8000/api/projects/')
-  //     .then(response => {
-  //       const projects = response.data
-  //       this.setState(
-  //         {
-  //           'projects': projects
-  //         }
-  //       )
-  //     }).catch(error => console.log(error))
+  componentDidMoun() {
+    axios.get('http://127.0.0.1:8000/api/projects/')
+      .then(response => {
+        const projects = response.data
+        this.setState(
+          {
+            'projects': projects
+          }
+        )
+      }).catch(error => console.log(error))
 
-  //   axios.get('http://127.0.0.1:8000/api/tasks/')
-  //     .then(response => {
-  //       const items = response.data
-  //       this.setState(
-  //         {
-  //           'items': items
-  //         }
-  //       )
-  //     }).catch(error => console.log(error))
-  // }
+    axios.get('http://127.0.0.1:8000/api/tasks/')
+      .then(response => {
+        const items = response.data
+        this.setState(
+          {
+            'items': items
+          }
+        )
+      }).catch(error => console.log(error))
+  }
+  // Axios почему то не вытягивает данные, пробовал по-разному, ничего не помогает.
+  // Пожалуйста, посмотрите код, потому что я без понятия где ошибка. Все перепробовал.
 
 }
 export default App;
