@@ -7,6 +7,7 @@ from .filters import ProjectFilter, ToDoFilter
 from rest_framework.pagination import LimitOffsetPagination
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListAPIView
+from rest_framework import permissions
 
 
 # class AuthorModelViewSet(ModelViewSet):
@@ -39,6 +40,7 @@ class ToDoLimitOffsetPagination(LimitOffsetPagination):
 
 
 class ToDoModelViewSet(ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
     queryset = ToDo.objects.all()
     serializer_class = ToDoModelSerializer
