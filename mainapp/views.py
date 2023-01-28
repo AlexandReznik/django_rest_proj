@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from .models import Author, Project, ToDo
-from .serializers import AuthorModelSerializer, ProjectModelSerializer, ToDoModelSerializer
+from .serializers import ProjectModelSerializer, ToDoModelSerializer, ToDoSerializerBase
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from .filters import ProjectFilter, ToDoFilter
 from rest_framework.pagination import LimitOffsetPagination
@@ -40,13 +40,18 @@ class ToDoLimitOffsetPagination(LimitOffsetPagination):
 
 
 class ToDoModelViewSet(ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
     queryset = ToDo.objects.all()
     serializer_class = ToDoModelSerializer
     filterset_class = ToDoFilter
     # filterset_fields = ['task', 'created_at']
     pagination_class = ToDoLimitOffsetPagination
+
+    def get_serializer_class(self):
+        if self.request.method in ['GET']:
+            return ToDoModelSerializer
+        return ToDoSerializerBase
 
     def delete(self, request, pk):
         task = get_object_or_404(ToDo, pk=pk)
