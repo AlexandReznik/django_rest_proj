@@ -35,10 +35,10 @@ class Query(graphene.ObjectType):
         except Project.DoesNotExist:
             return None
 
-    def resolve_all_todo(root, info):
+    def resolve_all_todos(root, info):
         return ToDo.objects.all()
 
-    def resolve_all_project(root, info):
+    def resolve_all_projects(root, info):
         return Project.objects.all()
 
 
